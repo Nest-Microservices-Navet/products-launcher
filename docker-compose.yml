@@ -18,38 +18,38 @@ services:
       - PORT=3000
       - NATS_SERVERS=nats://nats-server:4222
 
-  # products-ms:
-  #   build: ./products-ms
-  #   volumes:
-  #     - ./products-ms/src:/usr/src/app/src
-  #   command: npm start run:dev
-  #   environment:
-  #     - PORT=3001
-  #     - NATS_SERVERS=nats://nats-server:4222
-  #     - DATABASE_URL=file:./dev.db
+  products-ms:
+    build: ./products-ms
+    volumes:
+      - ./products-ms/src:/usr/src/app/src
+    command: npm start run:dev
+    environment:
+      - PORT=3001
+      - NATS_SERVERS=nats://nats-server:4222
+      - DATABASE_URL=file:./dev.db
   
-  # orders-ms:
-  #   depends_on:
-  #     - orders-db
-  #   build: ./orders-ms
-  #   volumes:
-  #     - ./orders-ms/src:/usr/src/app/src
-  #   command: npm run start:dev
-  #   environment:
-  #     - PORT=3002
-  #     - DATABASE_URL=postgresql://postgres:1234567@orders-db:5432/ordersdb?schema=public
-  #     - NATS_SERVERS=nats://nats-server:4222
+  orders-ms:
+    depends_on:
+      - orders-db
+    build: ./orders-ms
+    volumes:
+      - ./orders-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3002
+      - DATABASE_URL=postgresql://postgres:1234567@orders-db:5432/ordersdb?schema=public
+      - NATS_SERVERS=nats://nats-server:4222
 
 
-  # orders-db:
-  #   container_name: orders_database
-  #   image: postgres:16.2
-  #   restart: always
-  #   ports:
-  #     - "5432:5432"
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=1234567
-  #     - POSTGRES_DB=ordersdb
-  #   volumes:
-  #     - ./orders-ms/postgres:/var/lib/postgresql/data
+  orders-db:
+    container_name: orders_database
+    image: postgres:16.2
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234567
+      - POSTGRES_DB=ordersdb
+    volumes:
+      - ./orders-ms/postgres:/var/lib/postgresql/data
